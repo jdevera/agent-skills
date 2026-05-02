@@ -1,0 +1,16 @@
+{
+  "$schema": "./schema/manifest.schema.json",
+  "version": 1,
+  "skills": {
+    "typescript-code-review": {
+      "source": {
+        "kind": "fork",
+        "repo": "Exploration-labs/typescript-code-review",
+        "path": ".",
+        "ref": "main",
+        "commit": "3cbb6e8c0e21d3a33f892a4b49c63dcbc121e061",
+        "forked_at": "2026-05-02"
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+repos:
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.37.1
+    hooks:
+      - id: check-jsonschema
+        name: Validate manifest.json against schema
+        files: ^manifest\.json$
+        args: ["--schemafile", "schema/manifest.schema.json"]
+
+  - repo: local
+    hooks:
+      - id: check-manifest-sync
+        name: manifest.json matches skills/ directory
+        entry: scripts/check-manifest-sync.sh
+        language: script
+        files: ^(manifest\.json|skills/|scripts/check-manifest-sync\.sh)$
+        pass_filenames: false
+
+      - id: render-skills-list
+        name: Render skills list in README.md
+        entry: scripts/render-skills-list.sh
+        language: script
+        files: ^(manifest\.json|README\.md|scripts/render-skills-list\.sh)$
+        pass_filenames: false

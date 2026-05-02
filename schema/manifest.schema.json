@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/jdevera/agent-skills/main/schema/manifest.schema.json",
+  "title": "agent-skills manifest",
+  "description": "Inventory of skills in this repo and where each one comes from.",
+  "type": "object",
+  "required": ["version", "skills"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": { "const": 1 },
+    "skills": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-z0-9][a-z0-9-]*$": { "$ref": "#/$defs/entry" }
+      }
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "required": ["source"],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "oneOf": [
+            { "$ref": "#/$defs/sourceLocal" },
+            { "$ref": "#/$defs/sourceFork" }
+          ]
+        }
+      }
+    },
+    "sourceLocal": {
+      "type": "object",
+      "required": ["kind"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "const": "local" }
+      }
+    },
+    "sourceFork": {
+      "type": "object",
+      "required": ["kind", "repo", "ref", "commit", "forked_at"],
+      "additionalProperties": false,
+      "properties": {
+        "kind":      { "const": "fork" },
+        "repo":      { "type": "string", "description": "GitHub owner/repo shorthand or any full git URL." },
+        "ref":       { "type": "string", "description": "Branch, tag, or ref." },
+        "commit":    { "type": "string", "pattern": "^[a-f0-9]{40}$", "description": "Full SHA pinned at fork time." },
+        "forked_at": { "type": "string", "format": "date", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+        "path":      { "type": "string", "description": "Directory inside the source repo. Default skills/<name>/." },
+        "name":      { "type": "string", "description": "Original upstream name if I renamed it locally." }
+      }
+    }
+  }
+}
